@@ -23,6 +23,7 @@ if (err) throw err;
 console.log('Conectado!');
 });
 
+// tabela do banco de dados 'TAREFAS'
 // CREATE
 app.post('/tarefas', (req, res) => {
 const tarefas = req.body;
@@ -72,7 +73,58 @@ res.status(204).end();
 });
 });
 
-// Configurando o servidor
+
+// tabela do banco de dados 'PESSOAS'
+// CREATE
+app.post('/pessoas', (req, res) => {
+    const pessoas = req.body;
+    const sql = 'INSERT INTO pessoas SET ?';
+    connection.query(sql, pessoas, (error, result) => {
+    if (error) throw error;
+    res.status(201).json({ id: result.insertId, ...pessoas });
+    });
+    });
+    
+    // READ
+    app.get('/pessoas', (req, res) => {
+    const sql = 'SELECT * FROM pessoas ';
+    connection.query(sql, (error, results) => {
+    if (error) throw error;
+    res.json(results);
+    });
+    });
+    
+    app.get('/pessoas/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = 'SELECT * FROM pessoas WHERE id = ?';
+    connection.query(sql, id, (error, results) => {
+    if (error) throw error;
+    res.json(results[0]);
+    });
+    });
+    
+    // UPDATE
+    app.put('/pessoas/:id', (req, res) => {
+    const id = req.params.id;
+    const nova_pessoa = req.body;
+    const sql = 'UPDATE pessoas SET ? WHERE id = ?';
+    connection.query(sql, [nova_pessoa, id], (error) => {
+    if (error) throw error;
+    res.status(204).end();
+    });
+    });
+    
+    // DELETE
+    app.delete('/pessoas/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = 'DELETE FROM pessoas WHERE id = ?';
+    connection.query(sql, id, (error) => {
+    if (error) throw error;
+    res.status(204).end();
+    });
+    });
+    
+    // Configurando o servidor
 const port = 3000;
 app.listen(port, () => {
 console.log(`Servidor rodando na porta ${port}`);

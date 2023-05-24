@@ -127,7 +127,7 @@ app.delete('/pessoas/:id', (req, res) => {
 // get para exibir todas as tarefas de uma pessoa especifica
 app.get('/pessoas_tarefas/:id', (req, res) => {
     const id = req.params.id;
-    const sql = 'SELECT * FROM pessoas, tarefas WHERE pessoas.id = tarefas.id_pessoas';
+    const sql = 'SELECT pessoas. id, nome, telefone, titulo, descricao, status, data_criacao, data_conclusao FROM pessoas LEFT JOIN tarefas ON pessoas.id = tarefas.id_pessoas';
     connection.query(sql, id, (error, results) => {
         if (error) throw error;
         res.json(results[0]);

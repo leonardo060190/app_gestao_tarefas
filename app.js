@@ -124,18 +124,19 @@ app.delete('/pessoas/:id', (req, res) => {
     });
 });
 
+//lista as pessoas cadastradas e organiza pelo nome
 app.get('/Lista_pessoas', (req, res) => {
-    const sql = 'SELECT pessoas.nome, pessoas.telefone  FROM pessoas order by nome ';
+    const sql = 'SELECT pessoas.nome, pessoas.data_nascimento, pessoas.telefone  FROM pessoas order by nome ';
     connection.query(sql, (error, results) => {
         if (error) throw error;
         res.json(results);
     });
 });
 
-//busca as tarefas pelo status e exibe en orden pelo id das pessoas que foram cadastradas
+//busca as tarefas pelo status e exibe en ordem pelo id das pessoas que foram cadastradas
 app.get('/Lista_tarefas/:status', (req, res) => {
     const status = req.params.status;
-    const sql = `SELECT tarefas.id_pessoas AS Responsável, tarefas.titulo, tarefas.descricao, tarefas.data_criacao, tarefas.data_conclusao, tarefas.status  FROM tarefas where status = ? ORDER BY Responsável`;
+    const sql = `SELECT pessoas.nome AS Responsável, tarefas.titulo, tarefas.descricao, tarefas.data_criacao, tarefas.data_conclusao, tarefas.status  FROM tarefas INNER JOIN pessoas  ON tarefas.id_pessoas = pessoas.id where status = ? ORDER BY Responsável `;
     connection.query(sql, status, (error, results) => {
         if (error) throw error;
         res.json(results);

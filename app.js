@@ -124,10 +124,29 @@ app.delete('/pessoas/:id', (req, res) => {
     });
 });
 
+app.get('/Lista_pessoas', (req, res) => {
+    const sql = 'SELECT pessoas.nome, pessoas.telefone  FROM pessoas order by nome ';
+    connection.query(sql, (error, results) => {
+        if (error) throw error;
+        res.json(results);
+    });
+});
+
+//busca as tarefas pelo status e exibe en orden pelo id das pessoas que foram cadastradas
+app.get('/Lista_tarefas/:status', (req, res) => {
+    const status = req.params.status;
+    const sql = `SELECT tarefas.id_pessoas, tarefas.titulo, tarefas.descricao, tarefas.data_criacao, tarefas.data_conclusao, tarefas.status  FROM tarefas where status = ? ORDER BY id_pessoas`;
+    connection.query(sql, status, (error, results) => {
+        if (error) throw error;
+        res.json(results);
+    });
+});
+
 // get para exibir todas as tarefas de uma pessoa especifica
 app.get('/pessoas_tarefas/:id', (req, res) => {
     const id = req.params.id;
-    const sql = 'SELECT pessoas. id, nome, telefone, titulo, descricao, status, data_criacao, data_conclusao FROM pessoas LEFT JOIN tarefas ON pessoas.id = tarefas.id_pessoas';
+    //const sql = 'SELECT p.id,  FROM pessoas, tarefas  where pessoas.id = tarefas.id_pessoas = ? ';
+    const sql = 'SELECT p.id, p.nome, p.telefone, t.titulo, t.descricao, t.status, t.data_criacao, t.data_conclusao FROM pessoas AS p , tarefas AS t  where p.id = ? ORDER BY id_pessoas ';
     connection.query(sql, id, (error, results) => {
         if (error) throw error;
         res.json(results[0]);

@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Configurando o express para aceitar JSON
 app.use(express.json());
+
 // Conexão com o banco de dados
 var connection = mysql.createConnection({
     host: 'localhost',
@@ -29,12 +30,12 @@ connection.connect(function (err) {
 // CREATE
 //método post é usado para inclusão, adiciona uma nova tarefa
 //O Comando INSERT INTO inseri linhas na tabela criada.
-app.post('/tarefas', (req, res) => {
-    const tarefas = req.body;
+app.post('/tarefas', (req, res) => { 
+    const tarefas = req.body;// Recebe os registros pelo corpo da requisição 
     const sql = 'INSERT INTO tarefas SET ?';
     connection.query(sql, tarefas, (error, result) => {
         if (error) throw error;
-        res.status(201).json({ id: result.insertId, ...tarefas });
+        res.status(201).json({ id: result.insertId, ...tarefas });//statuscode indica Created e adicionou mais um registro
     });
 });
 
@@ -46,7 +47,7 @@ app.get('/tarefas', (req, res) => {
     const sql = 'SELECT * FROM tarefas ';
     connection.query(sql, (error, results) => {
         if (error) throw error;
-        res.json(results);
+        res.json(results);//retorna o resultado
     });
 });
 
@@ -55,11 +56,11 @@ app.get('/tarefas', (req, res) => {
 //O WHERE é usada em casos de consulta para ajudar a especificar os dados que serão consultados e manipulados.
 //Aqui ele faz a consulta somente no ('id') informado. 
 app.get('/tarefas/:id', (req, res) => {
-    const id = req.params.id;
+    const id = req.params.id; // Resebe o id do registro a ser exibido
     const sql = 'SELECT * FROM tarefas WHERE id = ?';
     connection.query(sql, id, (error, results) => {
         if (error) throw error;
-        res.json(results[0]);
+        res.json(results[0]);//retorna o resultado
     });
 });
 
@@ -70,8 +71,8 @@ app.get('/tarefas/:id', (req, res) => {
 //O WHERE é usada em casos de consulta para ajudar a especificar os dados que serão consultados e manipulados.
 //Aqui ele faz a consulta somente no ('id') informado para fazer a alteraçao.
 app.put('/tarefas/:id', (req, res) => {
-    const id = req.params.id;
-    const tarefaAtualizada = req.body;
+    const id = req.params.id;//Resebe o id do registro a ser alterado
+    const tarefaAtualizada = req.body;// Recebe os registros pelo corpo da requisição 
     const sql = 'UPDATE tarefas SET ? WHERE id = ?';
     connection.query(sql, [tarefaAtualizada, id], (error) => {
         if (error) throw error;
@@ -83,9 +84,9 @@ app.put('/tarefas/:id', (req, res) => {
 // Delete: remove ou deleta os registros das tabelas SQL. 
 // Aqui vai remover apenas os registros específicos que atendem a uma 
 // determinada condição usando O WHERE .
-//O Where aqui ele vai deixar deletar somente os registros indicados pelo ('id').
+//O Where aqui ele vai deixar deletar somente o registro indicado pelo ('id').
 app.delete('/tarefas/:id', (req, res) => {
-    const id = req.params.id;
+    const id = req.params.id;//Resebe o id do registro a ser deletado
     const sql = 'DELETE FROM tarefas WHERE id = ?';
     connection.query(sql, id, (error) => {
         if (error) throw error;
@@ -100,11 +101,11 @@ app.delete('/tarefas/:id', (req, res) => {
 //SELECT para buscar os registros inseridos na tabela. 
 //Podemos recuperar todos os registros de uma tabela usando um asterisco(*) em uma consulta SELECT.
 app.post('/pessoas', (req, res) => {
-    const pessoas = req.body;
+    const pessoas = req.body;// Recebe os registros pelo corpo da requisição 
     const sql = 'INSERT INTO pessoas SET ?';
     connection.query(sql, pessoas, (error, result) => {
         if (error) throw error;
-        res.status(201).json({ id: result.insertId, ...pessoas });
+        res.status(201).json({ id: result.insertId, ...pessoas });//statuscode indica Created e adicionou mais um registro
     });
 });
 
@@ -116,7 +117,7 @@ app.get('/pessoas', (req, res) => {
     const sql = 'SELECT * FROM pessoas ';
     connection.query(sql, (error, results) => {
         if (error) throw error;
-        res.json(results);
+        res.json(results);//retorna o resultado
     });
 });
 
@@ -125,11 +126,11 @@ app.get('/pessoas', (req, res) => {
 //O WHERE é usada em casos de consulta para ajudar a especificar os dados que serão consultados e manipulados.
 //Aqui ele faz a consulta somente no ('id') informado. 
 app.get('/pessoas/:id', (req, res) => {
-    const id = req.params.id;
+    const id = req.params.id;//Resebe o id do registro a ser deletado
     const sql = 'SELECT * FROM pessoas WHERE id = ?';
     connection.query(sql, id, (error, results) => {
         if (error) throw error;
-        res.json(results[0]);
+        res.json(results[0]);//retorna o resultado
     });
 });
 
@@ -140,10 +141,10 @@ app.get('/pessoas/:id', (req, res) => {
 //O WHERE é usada em casos de consulta para ajudar a especificar os dados que serão consultados e manipulados.
 //Aqui ele faz a consulta somente no ('id') informado para fazer a alteraçao.
 app.put('/pessoas/:id', (req, res) => {
-    const id = req.params.id;
-    const nova_pessoa = req.body;
+    const id = req.params.id;//Resebe o id do registro a ser alterado
+    const alteraRegistro = req.body;// Recebe os registros pelo corpo da requisição 
     const sql = 'UPDATE pessoas SET ? WHERE id = ?';
-    connection.query(sql, [nova_pessoa, id], (error) => {
+    connection.query(sql, [alteraRegistro, id], (error) => {
         if (error) throw error;
         res.status(204).end();
     });
@@ -155,7 +156,7 @@ app.put('/pessoas/:id', (req, res) => {
 // determinada condição usando O WHERE .
 //O Where aqui ele vai deixar deletar somente os registros indicados pelo ('id').
 app.delete('/pessoas/:id', (req, res) => {
-    const id = req.params.id;
+    const id = req.params.id;//Resebe o id do registro a ser deletado
     const sql = 'DELETE FROM pessoas WHERE id = ?';
     connection.query(sql, id, (error) => {
         if (error) throw error;
@@ -173,7 +174,7 @@ app.get('/Lista_pessoas', (req, res) => {
     const sql = 'SELECT pessoas.nome, pessoas.data_nascimento, pessoas.telefone  FROM pessoas order by nome ';
     connection.query(sql, (error, results) => {
         if (error) throw error;
-        res.json(results);
+        res.json(results);//retorna o resultado
     });
 });
 
@@ -189,11 +190,11 @@ app.get('/Lista_pessoas', (req, res) => {
 //busca as tarefas pelo status exibindo e organizando pelo id das pessoas que foram cadastradas,
 //mostrando o nome da pessoa que esta na tabela pessoas e tambem as tarefas relacionada a pessoa que esta na tabela tarefas.
 app.get('/Lista_tarefas/:status', (req, res) => {
-    const status = req.params.status;
+    const status = req.params.status;//Resebe o status do registro a ser exibido
     const sql = `SELECT pessoas.nome AS Responsável, tarefas.titulo, tarefas.descricao, tarefas.data_criacao, tarefas.data_conclusao, tarefas.status  FROM tarefas INNER JOIN pessoas  ON tarefas.id_pessoas = pessoas.id  where status = ? ORDER BY Responsável `;
     connection.query(sql, status, (error, results) => {
         if (error) throw error;
-        res.json(results);
+        res.json(results);//retorna o resultado
     });
 });
 
@@ -209,11 +210,11 @@ app.get('/Lista_tarefas/:status', (req, res) => {
 // Busca os registros que estão na tabela pessoas e na tabela tarefas e exibi os resultados juntando as duas tabelas
 //que estão referenciadas pelo id da pessoa e o id da chave estrangeira fazendo a comparação entre os dois id.
 app.get('/pessoas_tarefas/:id', (req, res) => {
-    const id = req.params.id;
-    const sql = `SELECT p.id AS Código, p.nome, p.telefone, t.id AS código_Tarefa, t.titulo, t.descricao, t.status, t.data_criacao, t.data_conclusao FROM pessoas AS p INNER JOIN tarefas AS t ON t.id_pessoas = p.id  where p.id = ? `;
+    const id = req.params.id;//Resebe o id do registro a ser exibido
+    const sql = `SELECT p.id AS Código, p.nome, p.telefone, t.id AS código_Tarefa, t.titulo, t.descricao, t.data_criacao, t.data_conclusao, t.status FROM pessoas AS p INNER JOIN tarefas AS t ON t.id_pessoas = p.id  where p.id = ? `;
     connection.query(sql, id, (error, results) => {
         if (error) throw error;
-        res.json(results);
+        res.json(results);//retorna o resultado
     });
 });
 

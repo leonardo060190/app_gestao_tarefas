@@ -29,7 +29,7 @@ connection.connect(function (err) {
 // tabela do banco de dados 'TAREFAS'
 // CREATE
 //método post é usado para inclusão, adiciona uma nova tarefa
-//O Comando INSERT INTO inseri linhas na tabela criada.
+//O Comando INSERT INTO inseri novas linhas na tabela criada.
 app.post('/tarefas', (req, res) => { 
     const tarefas = req.body;// Recebe os registros pelo corpo da requisição 
     const sql = 'INSERT INTO tarefas SET ?';
@@ -40,7 +40,7 @@ app.post('/tarefas', (req, res) => {
 });
 
 // READ
-//método get ele retorna todos os registros do banco de dados.
+//método get ele retorna todos os registros de uma tabela.
 //SELECT para buscar os registros inseridos na tabela. 
 //Podemos recuperar todos os registros de uma tabela usando um asterisco(*) em uma consulta SELECT.
 app.get('/tarefas', (req, res) => {
@@ -51,7 +51,7 @@ app.get('/tarefas', (req, res) => {
     });
 });
 
-//método get ele retorna todos os registros do banco de dados.
+//método get ele retorna todos os registros de uma tabela.
 //SELECT para buscar os registros inseridos na tabela. 
 //O WHERE é usada em casos de consulta para ajudar a especificar os dados que serão consultados e manipulados.
 //Aqui ele faz a consulta somente no ('id') informado. 
@@ -69,7 +69,7 @@ app.get('/tarefas/:id', (req, res) => {
 // Update: atualiza os registros presentes nas tabelas SQL. 
 // Assim, utilizaremos o comando UPDATE para fazer alterações nos dados presentes nas tabelas.
 //O WHERE é usada em casos de consulta para ajudar a especificar os dados que serão consultados e manipulados.
-//Aqui ele faz a consulta somente no ('id') informado para fazer a alteraçao.
+//Aqui ele faz a alteração dos registros, somente no ('id') informado.
 app.put('/tarefas/:id', (req, res) => {
     const id = req.params.id;//Resebe o id do registro a ser alterado
     const tarefaAtualizada = req.body;// Recebe os registros pelo corpo da requisição 
@@ -84,7 +84,7 @@ app.put('/tarefas/:id', (req, res) => {
 // Delete: remove ou deleta os registros das tabelas SQL. 
 // Aqui vai remover apenas os registros específicos que atendem a uma 
 // determinada condição usando O WHERE .
-//O Where aqui ele vai deixar deletar somente o registro indicado pelo ('id').
+// aqui ele vai deletar somente o registro indicado pelo ('id').
 app.delete('/tarefas/:id', (req, res) => {
     const id = req.params.id;//Resebe o id do registro a ser deletado
     const sql = 'DELETE FROM tarefas WHERE id = ?';
@@ -97,12 +97,11 @@ app.delete('/tarefas/:id', (req, res) => {
 
 // tabela do banco de dados 'PESSOAS'
 // CREATE
-//método get ele retorna todos os registros do banco de dados.
-//SELECT para buscar os registros inseridos na tabela. 
-//Podemos recuperar todos os registros de uma tabela usando um asterisco(*) em uma consulta SELECT.
+//método post é usado para inclusão, adiciona uma nova tarefa
+//O Comando INSERT INTO inseri novas linhas na tabela especificada.
 app.post('/pessoas', (req, res) => {
     const pessoas = req.body;// Recebe os registros pelo corpo da requisição 
-    const sql = 'INSERT INTO pessoas SET ?';
+    const sql = 'INSERT * INTO pessoas SET ?';
     connection.query(sql, pessoas, (error, result) => {
         if (error) throw error;
         res.status(201).json({ id: result.insertId, ...pessoas });//statuscode indica Created e adicionou mais um registro
@@ -110,7 +109,7 @@ app.post('/pessoas', (req, res) => {
 });
 
 // READ
-//método get ele retorna todos os registros do banco de dados.
+//método get ele retorna todos os registros de uma tabela.
 //SELECT para buscar os registros inseridos na tabela. 
 //Podemos recuperar todos os registros de uma tabela usando um asterisco(*) em uma consulta SELECT.
 app.get('/pessoas', (req, res) => {
@@ -121,7 +120,7 @@ app.get('/pessoas', (req, res) => {
     });
 });
 
-//método get ele retorna todos os registros do banco de dados.
+//método get ele retorna todos os registros de uma tabela.
 //SELECT para buscar os registros inseridos na tabela. 
 //O WHERE é usada em casos de consulta para ajudar a especificar os dados que serão consultados e manipulados.
 //Aqui ele faz a consulta somente no ('id') informado. 
@@ -139,7 +138,7 @@ app.get('/pessoas/:id', (req, res) => {
 // Update: atualiza os registros presentes nas tabelas SQL. 
 // Assim, utilizaremos o comando UPDATE para fazer alterações nos dados presentes nas tabelas.
 //O WHERE é usada em casos de consulta para ajudar a especificar os dados que serão consultados e manipulados.
-//Aqui ele faz a consulta somente no ('id') informado para fazer a alteraçao.
+//Aqui vai fazer a alteraçao dos registros somente no ('id') que foi informado.
 app.put('/pessoas/:id', (req, res) => {
     const id = req.params.id;//Resebe o id do registro a ser alterado
     const alteraRegistro = req.body;// Recebe os registros pelo corpo da requisição 
@@ -154,7 +153,7 @@ app.put('/pessoas/:id', (req, res) => {
 // Delete: remove ou deleta os registros das tabelas SQL. 
 //Aqui vai remover apenas os registros específicos que atendem a uma 
 // determinada condição usando O WHERE .
-//O Where aqui ele vai deixar deletar somente os registros indicados pelo ('id').
+// aqui ele vai deletar somente os registros indicados pelo ('id').
 app.delete('/pessoas/:id', (req, res) => {
     const id = req.params.id;//Resebe o id do registro a ser deletado
     const sql = 'DELETE FROM pessoas WHERE id = ?';
@@ -164,12 +163,12 @@ app.delete('/pessoas/:id', (req, res) => {
     });
 });
 
-//método get ele retorna todos os registros do banco de dados.
+//método get ele retorna todos os registros de uma tabela.
 //SELECT para buscar os registros inseridos na tabela.
 //O FROM, que indica a(s) tabela(s) dos quais recuperar dados.
 //ORDER BY organiza os resultados de acordo com uma ou mais colunas da tabela,
 //podendo definir a ordem do resultados como crescente ou decrescente.
-//Aqui o get lista as pessoas pela condição que foi informada no select cadastradas e organiza pelo nome
+//Aqui o get lista as pessoas pela condição que foi informada no select e organiza pelo nome
 app.get('/Lista_pessoas', (req, res) => {
     const sql = 'SELECT pessoas.nome, pessoas.data_nascimento, pessoas.telefone  FROM pessoas order by nome ';
     connection.query(sql, (error, results) => {
@@ -178,7 +177,7 @@ app.get('/Lista_pessoas', (req, res) => {
     });
 });
 
-//método get ele retorna todos os registros do banco de dados.
+//método get ele retorna todos os registros de uma tabela.
 //SELECT para buscar os registros inseridos na tabela.
 //O FROM, que indica a(s) tabela(s) dos quais recuperar dados.
 //ORDER BY organiza os resultados de acordo com uma ou mais colunas da tabela,
@@ -198,7 +197,7 @@ app.get('/Lista_tarefas/:status', (req, res) => {
     });
 });
 
-//método get ele retorna todos os registros do banco de dados.
+//método get ele retorna todos os registros de uma tabela.
 //SELECT para buscar os registros inseridos na tabela.
 //O FROM, que indica a(s) tabela(s) dos quais recuperar dados.
 //ORDER BY organiza os resultados de acordo com uma ou mais colunas da tabela,

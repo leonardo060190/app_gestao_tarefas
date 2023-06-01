@@ -51,7 +51,7 @@ app.get('/tarefas', (req, res) => {
     });
 });
 
-//método get ele retorna todos os registros de uma tabela.
+//método get ele retorna os registros de uma tabela que pede no id.
 //SELECT para buscar os registros inseridos na tabela. 
 //O WHERE é usada em casos de consulta para ajudar a especificar os dados que serão consultados e manipulados.
 //Aqui ele faz a consulta somente no ('id') informado. 
@@ -120,7 +120,7 @@ app.get('/pessoas', (req, res) => {
     });
 });
 
-//método get ele retorna todos os registros de uma tabela.
+//método get ele retorna os registros de uma tabela que pede no id.
 //SELECT para buscar os registros inseridos na tabela. 
 //O WHERE é usada em casos de consulta para ajudar a especificar os dados que serão consultados e manipulados.
 //Aqui ele faz a consulta somente no ('id') informado. 

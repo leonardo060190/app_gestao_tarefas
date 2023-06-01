@@ -101,7 +101,7 @@ app.delete('/tarefas/:id', (req, res) => {
 //O Comando INSERT INTO inseri novas linhas na tabela especificada.
 app.post('/pessoas', (req, res) => {
     const pessoas = req.body;// Recebe os registros pelo corpo da requisição 
-    const sql = 'INSERT * INTO pessoas SET ?';
+    const sql = 'INSERT INTO pessoas SET ?';
     connection.query(sql, pessoas, (error, result) => {
         if (error) throw error;
         res.status(201).json({ id: result.insertId, ...pessoas });//statuscode indica Created e adicionou mais um registro

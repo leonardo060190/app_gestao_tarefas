@@ -30,7 +30,7 @@ connection.connect(function (err) {
 // CREATE
 //método post é usado para inclusão, adiciona uma nova tarefa
 //O Comando INSERT INTO inseri novas linhas na tabela criada.
-app.post('/tarefas', (req, res) => { 
+app.post('/tarefas', (req, res) => {
     const tarefas = req.body;// Recebe os registros pelo corpo da requisição 
     const sql = 'INSERT INTO tarefas SET ?';
     connection.query(sql, tarefas, (error, result) => {
@@ -51,7 +51,7 @@ app.get('/tarefas', (req, res) => {
     });
 });
 
-//método get ele retorna todos os registros de uma tabela.
+//método get ele retorna os registros de uma tabela que pede no id.
 //SELECT para buscar os registros inseridos na tabela. 
 //O WHERE é usada em casos de consulta para ajudar a especificar os dados que serão consultados e manipulados.
 //Aqui ele faz a consulta somente no ('id') informado. 
@@ -120,7 +120,7 @@ app.get('/pessoas', (req, res) => {
     });
 });
 
-//método get ele retorna todos os registros de uma tabela.
+//método get ele retorna os registros de uma tabela que pede no id.
 //SELECT para buscar os registros inseridos na tabela. 
 //O WHERE é usada em casos de consulta para ajudar a especificar os dados que serão consultados e manipulados.
 //Aqui ele faz a consulta somente no ('id') informado. 

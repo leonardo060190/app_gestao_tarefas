@@ -170,7 +170,15 @@ app.delete('/pessoas/:id', (req, res) => {
 //podendo definir a ordem do resultados como crescente ou decrescente.
 //Aqui o get lista as pessoas pela condição que foi informada no select e organiza pelo nome
 app.get('/Lista_pessoas', (req, res) => {
-    const sql = 'SELECT pessoas.nome, pessoas.data_nascimento, pessoas.telefone  FROM pessoas order by nome ';
+    const sql = `
+                SELECT 
+                    pessoas.nome, 
+                    pessoas.data_nascimento, 
+                    pessoas.telefone  
+                FROM 
+                    pessoas 
+                order by 
+                    nome`;
     connection.query(sql, (error, results) => {
         if (error) throw error;
         res.json(results);//retorna o resultado
@@ -182,15 +190,30 @@ app.get('/Lista_pessoas', (req, res) => {
 //O FROM, que indica a(s) tabela(s) dos quais recuperar dados.
 //ORDER BY organiza os resultados de acordo com uma ou mais colunas da tabela,
 //podendo definir a ordem do resultados como crescente ou decrescente.
-//'AS' é usado para atribuir um novo nome temporariamente a uma coluna de tabela.
-//Ele facilita a apresentação dos resultados da consulta e permite que o desenvolvedor rotule os resultados com mais precisão, 
-//sem renomear permanentemente as colunas da tabela.
-//O INNER JOIN seleciona registros que possuem valores correspondentes em ambas as tabelas.
+//LEFT JOINune duas tabelas com base em uma coluna comum. Ele seleciona os registros que possuem valores 
+//correspondentes nessas colunas e nas linhas restantes da tabela à esquerda.
 //busca as tarefas pelo status exibindo e organizando pelo id das pessoas que foram cadastradas,
 //mostrando o nome da pessoa que esta na tabela pessoas e tambem as tarefas relacionada a pessoa que esta na tabela tarefas.
 app.get('/Lista_tarefas/:status', (req, res) => {
     const status = req.params.status;//Resebe o status do registro a ser exibido
-    const sql = `SELECT pessoas.nome AS Responsável, tarefas.titulo, tarefas.descricao, tarefas.data_criacao, tarefas.data_conclusao, tarefas.status  FROM tarefas INNER JOIN pessoas  ON tarefas.id_pessoas = pessoas.id  where status = ? ORDER BY Responsável `;
+    const sql = `
+                SELECT 
+                    pessoas.nome 'Responsável', 
+                    tarefas.titulo, 
+                    tarefas.descricao, 
+                    tarefas.data_criacao, 
+                    tarefas.data_conclusao, 
+                    tarefas.status  
+                FROM 
+                    tarefas 
+                LEFT JOIN 
+                    pessoas  
+                ON 
+                    tarefas.id_pessoas = pessoas.id  
+                where 
+                    status = ? 
+                ORDER BY 
+                    Responsável `;
     connection.query(sql, status, (error, results) => {
         if (error) throw error;
         res.json(results);//retorna o resultado
@@ -202,15 +225,30 @@ app.get('/Lista_tarefas/:status', (req, res) => {
 //O FROM, que indica a(s) tabela(s) dos quais recuperar dados.
 //ORDER BY organiza os resultados de acordo com uma ou mais colunas da tabela,
 //podendo definir a ordem do resultados como crescente ou decrescente.
-//'AS' é usado para atribuir um novo nome temporariamente a uma coluna de tabela.
-//Ele facilita a apresentação dos resultados da consulta e permite que o desenvolvedor rotule os resultados com mais precisão, 
-//sem renomear permanentemente as colunas da tabela.
-//O INNER JOIN seleciona registros que possuem valores correspondentes em ambas as tabelas.
+//LEFT JOINune duas tabelas com base em uma coluna comum. Ele seleciona os registros que possuem valores 
+//correspondentes nessas colunas e nas linhas restantes da tabela à esquerda.
 // Busca os registros que estão na tabela pessoas e na tabela tarefas e exibi os resultados juntando as duas tabelas
 //que estão referenciadas pelo id da pessoa e o id da chave estrangeira fazendo a comparação entre os dois id.
 app.get('/pessoas_tarefas/:id', (req, res) => {
     const id = req.params.id;//Resebe o id do registro a ser exibido
-    const sql = `SELECT p.id AS Código, p.nome, p.telefone, t.id AS código_Tarefa, t.titulo, t.descricao, t.data_criacao, t.data_conclusao, t.status FROM pessoas AS p INNER JOIN tarefas AS t ON t.id_pessoas = p.id  where p.id = ? `;
+    const sql = 
+                `SELECT 
+                    p.id 'Código da Pessoa', 
+                    p.nome, 
+                    p.telefone, 
+                    t.id 'código da Tarefa', 
+                    t.titulo, 
+                    t.descricao, 
+                    t.data_criacao, 
+                    t.data_conclusao, 
+                    t.status 
+                    FROM pessoas p 
+                LEFT JOIN 
+                    tarefas t 
+                ON 
+                    t.id_pessoas = p.id  
+                where 
+                    p.id = ? `;
     connection.query(sql, id, (error, results) => {
         if (error) throw error;
         res.json(results);//retorna o resultado

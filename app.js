@@ -225,7 +225,7 @@ app.get('/Lista_tarefas/:status', (req, res) => {
 //O FROM, que indica a(s) tabela(s) dos quais recuperar dados.
 //ORDER BY organiza os resultados de acordo com uma ou mais colunas da tabela,
 //podendo definir a ordem do resultados como crescente ou decrescente.
-//LEFT JOINune duas tabelas com base em uma coluna comum. Ele seleciona os registros que possuem valores 
+//LEFT JOIN une duas tabelas com base em uma coluna comum. Ele seleciona os registros que possuem valores 
 //correspondentes nessas colunas e nas linhas restantes da tabela à esquerda.
 // Busca os registros que estão na tabela pessoas e na tabela tarefas e exibi os resultados juntando as duas tabelas
 //que estão referenciadas pelo id da pessoa e o id da chave estrangeira fazendo a comparação entre os dois id.
@@ -242,7 +242,8 @@ app.get('/pessoas_tarefas/:id', (req, res) => {
                     t.data_criacao, 
                     t.data_conclusao, 
                     t.status 
-                    FROM pessoas p 
+                FROM 
+                    pessoas p 
                 LEFT JOIN 
                     tarefas t 
                 ON 
@@ -262,3 +263,7 @@ const port = 3000;
 app.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`);
 });
+
+
+// Para rodar o servidor no nodemon se usar o start é colocar o código abaixo no terminal:
+// Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
